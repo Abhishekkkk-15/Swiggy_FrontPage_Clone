@@ -16,6 +16,11 @@ jobs:
             $dateTag = Get-Date -Format "yyyyMMddHHmmss"
             Add-Content -Path $env:GITHUB_ENV -Value "IMAGE_TAG=$dateTag"
           shell: powershell
+        - name: Debug Docker credentials
+          run: |
+            echo "Username: ${{ secrets.DOCKER_USERNAME }}"
+            echo "Token length: $(${env:DOCKER_PASSWORD}.Length)"
+          shell: powershell
 
 
         - name: Docker login (PowerShell-safe)
