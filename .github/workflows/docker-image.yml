@@ -52,7 +52,7 @@ jobs:
               git remote set-url origin https://x-access-token:${GH_PAT}@github.com/abhishekkkk-15/Swiggy_FrontPage_Clone.git
 
               git add k8s/deployment.yml
-              git commit -m "Update image to ${GITHUB_SHA}" || echo "No changes"
+              git commit -m "Update image to ${GITHUB_SHA}"
               git push origin main
 
 
