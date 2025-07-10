@@ -39,7 +39,7 @@ jobs:
 
         - name: update deployment yml with new tag
           run: |
-                sed -i "s|image: abhishekkk15/swiggy_clone:.*|image: abhishekkk15/swiggy_clone:${{ env.IMAGE_TAG }}|" k8s/deployment.yaml
+                sed -i "s|image: abhishekkk15/swiggy_clone:.*|image: abhishekkk15/swiggy_clone:${{ env.IMAGE_TAG }}|" k8s/deployment.yml
 
         - name: Commit and push updated YAML
           run: |
