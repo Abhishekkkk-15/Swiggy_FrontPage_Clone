@@ -50,5 +50,7 @@ jobs:
             git commit -m "Update image tag to ${{ env.IMAGE_TAG }}" || echo "No changes to commit"
             git push origin main
           shell: bash
+          working-directory: "${{ github.workspace }}"
+
 
 
