@@ -56,12 +56,14 @@ jobs:
             if ($LASTEXITCODE -ne 0) {
               Write-Output "No changes to commit"
             }
+            git config --global --unset credential.helper
 
             Write-Output "Using token: $($env:GH_PAT.Substring(0, 4))********"
 
             # This line is CRUCIAL
             git remote set-url origin "https://x-access-token:$($env:GH_PAT)@github.com/Abhishekkkk-15/Swiggy_FrontPage_Clone.git"
             git push origin main
+            git config --global --unset credential.helper
 
 
 
