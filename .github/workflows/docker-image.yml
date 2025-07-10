@@ -57,7 +57,7 @@ jobs:
               Write-Output "No changes to commit"
             }
 
-            git push -f https://x-access-token:$env:GH_PAT@github.com/abhishekkkk-15/Swiggy_FrontPage_Clone.git main
+            git push -f https://x-access-token:${ env:GH_PAT }@github.com/abhishekkkk-15/Swiggy_FrontPage_Clone.git main
 
 
 
