@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: swiggy_clone_service
+spec:
+  selector:
+    app: swiggy_clone
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swiggy_clone
+  labels:
+    app: swiggy_clone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swiggy_clone
+  template:
+    metadata:
+      labels:
+        app: swiggy_clone
+    spec:
+      containers:
+      - name: swiggy_clone
+        image: abhihsekkk15/swiggy_clone:23423423
+        ports:
+        - containerPort: 3000
