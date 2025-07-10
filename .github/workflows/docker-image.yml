@@ -23,7 +23,7 @@ jobs:
             $token = "${{ secrets.DOCKER_PASSWORD }}"
             $username = "${{ secrets.DOCKER_USERNAME }}"
             $token | docker login -u $username --password-stdin
-          shell: pwsh
+          shell: powershell
           
         - name:  build docker image
           run: docker build -t abhishekkk15/swiggy_clone:${{env.IMAGE_TAG}}
