@@ -27,7 +27,7 @@ jobs:
           run: |
             $token = "dckr_pat_iugvBC2tzgOcYC0jI9ubLlmsEZQ"
             $username = "abhishekkk15"
-            $token | docker login -u "$username" --password-stdin
+            $token | docker login -u "abhishekkk15" --password-stdin
           shell: powershell
 
           
