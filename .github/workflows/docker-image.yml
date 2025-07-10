@@ -46,7 +46,7 @@ jobs:
           working-directory: "${{ github.workspace }}"
           run: | 
            git config --global user.email "actions@github.com"
-           git add k8s/deployment.yaml
+           git add k8s/deployment.yml
            git commit -m "Update image to ${{ github.sha }}"
            git push -f https://${secret.GH_PAT}@github.com/abhishekkkk-15/grade-api-gitops.git main
 
