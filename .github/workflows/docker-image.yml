@@ -57,7 +57,10 @@ jobs:
               Write-Output "No changes to commit"
             }
 
+            Write-Output "Using token: $($env:GH_PAT.Substring(0, 4))********"
+
             git push -f https://x-access-token:$env:GH_PAT@github.com/abhishekkkk-15/Swiggy_FrontPage_Clone.git main
+
 
 
 
