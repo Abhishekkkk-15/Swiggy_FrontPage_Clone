@@ -25,7 +25,7 @@ jobs:
 
         - name: update deployment yml with new tag
           run: |
-                sed -i "s|image: yourusername/vite-app:.*|image: yourusername/vite-app:${{ env.IMAGE_TAG }}|" k8s/deployment.yaml
+                sed -i "s|image: abhishekkk15/swiggy_clone:.*|image: abhishekkk15/swiggy_clone:${{ env.IMAGE_TAG }}|" k8s/deployment.yaml
 
         - name: Commit and push updated YAML
           run: |
