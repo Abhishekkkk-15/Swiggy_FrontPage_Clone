@@ -37,10 +37,10 @@ jobs:
         - name: push image to docker hub
           run: docker push abhishekkk15/swiggy_clone:${{env.IMAGE_TAG}}
 
-        - name: update deployment yml with new tag
-          shell: bash
+        - name: Update image tag in deployment.yml (PowerShell)
+          shell: powershell
           run: |
-                sed -i "s|image: abhishekkk15/swiggy_clone:.*|image: abhishekkk15/swiggy_clone:${{ env.IMAGE_TAG }}|" k8s/deployment.yml
+            (Get-Content "k8s/deployment.yml") -replace "image: .*/swiggy_clone:.*", "image: abhishekkk15/swiggy_clone:${env:IMAGE_TAG}" | Set-Content "k8s/deployment.yml"
 
         - name: Commit and push updated YAML
           shell: powershell
