@@ -38,6 +38,7 @@ jobs:
           run: docker push abhishekkk15/swiggy_clone:${{env.IMAGE_TAG}}
 
         - name: update deployment yml with new tag
+          shell: bash
           run: |
                 sed -i "s|image: abhishekkk15/swiggy_clone:.*|image: abhishekkk15/swiggy_clone:${{ env.IMAGE_TAG }}|" k8s/deployment.yml
 
