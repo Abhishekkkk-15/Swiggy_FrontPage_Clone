@@ -61,5 +61,5 @@ jobs:
         if ($LASTEXITCODE -ne 0) {
           Write-Output "No changes to commit"
         } else {
-          git push origin main
+          git push -f "https://x-access-token:$env:GH_PAT@github.com/Abhishekkkk-15/Swiggy_FrontPage_Clone.git" main
         }
