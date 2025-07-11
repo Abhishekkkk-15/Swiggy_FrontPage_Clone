@@ -1,64 +1,65 @@
 name: Build and Push Docker Image with Tag
-on: 
-    push: 
-        branches: [main]
 
+on: 
+  push: 
+    branches: [main]
 
 jobs:
-    build:
-        runs-on: self-hosted
-        steps:
-        - name: checkout repo
-          uses: actions/checkout@v3
-          
-        - name: Set IMAGE_TAG (Windows PowerShell)
-          run: |
-            $dateTag = Get-Date -Format "yyyyMMddHHmmss"
-            Add-Content -Path $env:GITHUB_ENV -Value "IMAGE_TAG=$dateTag"
-          shell: powershell
-        - name: Debug Docker credentials
-          run: |
-            echo "Username: ${{ secrets.DOCKER_USERNAME }}"
-            echo "Token length: $(${env:DOCKER_PASSWORD}.Length)"
-          shell: powershell
+  build:
+    runs-on: self-hosted
 
+    env:
+      GH_PAT: ${{ secrets.GH_PAT }}
 
-        - name: Docker login (PowerShell with full command)
-          shell: powershell
-          run: |
-            docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
+    - name: Set IMAGE_TAG (PowerShell)
+      shell: powershell
+      run: |
+        $dateTag = Get-Date -Format "yyyyMMddHHmmss"
+        Add-Content -Path $env:GITHUB_ENV -Value "IMAGE_TAG=$dateTag"
 
+    - name: Debug Docker credentials
+      shell: powershell
+      run: |
+        Write-Output "Username: ${{ secrets.DOCKER_USERNAME }}"
+        Write-Output "Token length: $($env:DOCKER_PASSWORD.Length)"
 
-          
-        - name:  build docker image
-          run: docker build -t abhishekkk15/swiggy_clone:${{env.IMAGE_TAG}} .
-        
-        - name: push image to docker hub
-          run: docker push abhishekkk15/swiggy_clone:${{env.IMAGE_TAG}}
+    - name: Docker login (PowerShell)
+      shell: powershell
+      run: |
+        docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
 
-        - name: Update image tag in deployment.yml (PowerShell)
-          shell: powershell
-          run: |
-            (Get-Content "k8s/deployment.yml") -replace "image: .*/swiggy_clone:.*", "image: abhishekkk15/swiggy_clone:${env:IMAGE_TAG}" | Set-Content "k8s/deployment.yml"
+    - name: Build Docker image
+      shell: powershell
+      run: |
+        docker build -t abhishekkk15/swiggy_clone:$env:IMAGE_TAG .
 
-        - name: Commit and push updated YAML
-          shell: powershell
-          run: |
-              git config --global user.email "actions@github.com"
-              git config --global user.name "GitHub Actions"
-              git config --global credential.helper ""
+    - name: Push Docker image
+      shell: powershell
+      run: |
+        docker push abhishekkk15/swiggy_clone:$env:IMAGE_TAG
 
-              git remote set-url origin https://x-access-token:${GH_PAT}@github.com/abhishekkkk-15/Swiggy_FrontPage_Clone.git
+    - name: Update image tag in deployment.yml (PowerShell)
+      shell: powershell
+      run: |
+        (Get-Content "k8s/deployment.yml") -replace "image: .*/swiggy_clone:.*", "image: abhishekkk15/swiggy_clone:$env:IMAGE_TAG" | Set-Content "k8s/deployment.yml"
 
-              git add k8s/deployment.yml
-              git commit -m "Update image to ${GITHUB_SHA}"
-              git push origin main
+    - name: Commit and push updated YAML (PowerShell)
+      shell: powershell
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git config --global credential.helper ""
 
+        git remote set-url origin "https://x-access-token:$env:GH_PAT@github.com/abhishekkkk-15/Swiggy_FrontPage_Clone.git"
 
-
-
-
-
-
-
+        git add k8s/deployment.yml
+        git commit -m "Update image to $env:GITHUB_SHA"
+        if ($LASTEXITCODE -ne 0) {
+          Write-Output "No changes to commit"
+        } else {
+          git push origin main
+        }
